@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package dna;
+
+service DnaSearch {
+  rpc Search (SearchRequest) returns (SearchResponse);
+}
+
+message SearchRequest {
+  string sequence = 1;
+  string pattern = 2;
+  bool allow_overlapping = 3;
+}
+
+message Match {
+  int64 position = 1;
+  string context_before = 2;
+  string context_after = 3;
+}
+
+message SearchResponse {
+  repeated Match matches = 1;
+  int32 total_matches = 2;
+  double search_time_ms = 3;
+  string algorithm_used = 4;
+}
