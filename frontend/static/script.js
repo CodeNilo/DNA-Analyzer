@@ -265,7 +265,7 @@ async function handleUpload(file) {
         
         document.getElementById('fileName').textContent = data.name?.toUpperCase() || file.name.toUpperCase();
         document.getElementById('statChars').textContent = (data.length || 0).toLocaleString();
-        document.getElementById('statBP').textContent = (data.length || 0).toLocaleString();
+        // document.getElementById('statBP').textContent = (data.length || 0).toLocaleString();
         const gcVal = typeof data.gc_content === 'number' ? data.gc_content : null;
         document.getElementById('statGC').textContent = gcVal !== null ? `${gcVal.toFixed(2)}%` : '---';
         

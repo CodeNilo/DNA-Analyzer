@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS GENOME INTERFACE PRO</title>
+    <title>DNA-Analyzer 1.0</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="cosmic-background">
@@ -20,8 +20,8 @@
     <div class="app-shell">
         <aside class="sidebar">
             <div class="logo" onclick="window.location.reload()" style="cursor: pointer;" title="Inicio">
-    <i class="ri-home-4-line"></i>
-</div>
+                <i class="ri-home-4-line"></i>
+            </div>
             
             <nav class="nav-group">
                 <button class="nav-btn active" data-view="upload" title="Cargar Secuencia">
@@ -36,24 +36,21 @@
                 <button class="nav-btn locked" data-view="dashboard" id="navDashboard" title="Dashboard">
                     <i class="ri-pulse-line"></i>
                 </button>
-                <button class="nav-btn locked" data-view="search" id="navSearch" title="Búsqueda">
-                    <i class="ri-search-eye-line"></i>
-                </button>
                 <button class="nav-btn locked" data-view="results" id="navResults" title="Resultados">
                     <i class="ri-file-list-3-line"></i>
                 </button>
             </nav>
             
             <div class="sidebar-footer">
-                <span class="sys-version">v6.5 PRO</span>
+                <span class="sys-version">v1.0</span>
             </div>
         </aside>
 
         <main class="main-content">
             <header class="top-header">
                 <div class="header-brand">
-                    <h1>GENOME SEQUENCER <span class="pro-badge">PRO</span></h1>
-                    <p class="subtitle">PROJECT: NEXUS VIOLET // SESSION #8842-X</p>
+                    <h1>DNA-Analyzer<span class="pro-badge">v1.0</span></h1>
+                    <p class="subtitle">Buscador de patrones en secuencias de ADN - Proyecto: Programacion Competitiva</p>
                 </div>
                 <div class="status-indicator">
                     <span class="status-dot waiting" id="statusDot"></span>
@@ -73,7 +70,10 @@
                             <p class="upload-subtitle">Arrastra tu archivo o haz clic</p>
                             <div class="upload-formats">
                                 <span class="format-tag">.CSV</span>
+                                <span class="format-tag">.TXT</span>
                                 <span class="format-tag">.FASTA</span>
+                                <span class="format-tag">.DOCX</span>
+                                <span class="format-tag">.XLSX</span>
                             </div>
                             <input type="file" id="fileInput" hidden accept=".csv,.fasta,.txt">
                         </div>
@@ -85,64 +85,57 @@
                         <div class="glass-panel visualizer-panel">
                             <div class="panel-header">
                                 <div class="panel-title">
-                                    <i class="ri-focus-3-line"></i> VISUALIZACIÓN 3D
+                                    <i class="ri-focus-3-line"></i> VISUALIZACION 3D
                                 </div>
                                 <div class="panel-tags">
                                     <span class="tag live">EN VIVO</span>
                                 </div>
                             </div>
+                            <div class="viz-3d-wrapper">
+                                <canvas id="viz3d"></canvas>
+                            </div>
                         </div>
 
-                        <div class="glass-panel stats-panel">
-                            <div class="panel-header">
-                                <div class="panel-title"><i class="ri-bar-chart-box-line"></i> ESTADÍSTICAS</div>
-                            </div>
-                            <div class="stats-list">
-                                <div class="stat-item">
-                                    <span class="stat-label">ARCHIVO</span>
-                                    <span class="stat-value filename" id="fileName">---</span>
+                        <div class="sidebar-panels">
+                            <div class="glass-panel stats-panel-compact">
+                                <div class="panel-header">
+                                    <div class="panel-title"><i class="ri-bar-chart-box-line"></i> ESTADISTICAS</div>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">PARES BASES</span>
-                                    <span class="stat-value" id="statBP">0</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">CONTENIDO GC</span>
-                                    <span class="stat-value" id="statGC">0%</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">CALIDAD</span>
-                                    <span class="stat-value highlight">Q30 (Óptima)</span>
+                                <div class="stats-list-compact">
+                                    <div class="stat-item-compact">
+                                        <span class="stat-label">ARCHIVO</span>
+                                        <span class="stat-value filename" id="fileName">---</span>
+                                    </div>
+                                    <div class="stat-item-compact">
+                                        <span class="stat-label">CARACTERES</span>
+                                        <span class="stat-value" id="statChars">0</span>
+                                    </div>
+                                    <div class="stat-item-compact">
+                                        <span class="stat-label">CONTENIDO GC</span>
+                                        <span class="stat-value" id="statGC">0%</span>
+                                    </div>
                                 </div>
                             </div>
-                            <button class="cta-button" onclick="switchView('search')">
-                                <span>IR AL BUSCADOR</span>
-                                <i class="ri-arrow-right-s-line"></i>
-                            </button>
-                        </div>
-                    </div>
-                </section>
 
-                <section class="view" id="viewSearch">
-                    <div class="glass-panel full-height">
-                        <div class="panel-header">
-                            <div class="panel-title"><i class="ri-search-2-line"></i> MOTOR DE BÚSQUEDA</div>
-                        </div>
-                        
-                        <div class="search-container">
-                            <label class="input-label">SECUENCIA OBJETIVO (MOTIF)</label>
-                            <div class="search-box">
-                                <input type="text" id="patternInput" placeholder="EJ: ATCG..." maxlength="20">
-                                <button class="run-btn" onclick="runSearch()">ANALIZAR</button>
-                            </div>
-                            
-                            <div class="presets-area">
-                                <span class="stat-label">PRESETS RÁPIDOS:</span>
-                                <div class="chips-grid">
-                                    <button class="chip" onclick="setPattern('ATG')">START (ATG)</button>
-                                    <button class="chip" onclick="setPattern('TGA')">STOP (TGA)</button>
-                                    <button class="chip" onclick="setPattern('TATA')">CAJA TATA</button>
-                                    <button class="chip" onclick="setPattern('GATTACA')">GATTACA</button>
+                            <div class="glass-panel search-panel-compact">
+                                <div class="panel-header">
+                                    <div class="panel-title"><i class="ri-search-eye-line"></i> BUSCAR PATRON</div>
+                                </div>
+                                <div class="search-compact">
+                                    <input type="text" id="patternInput" placeholder="Ingresa patron (ej: ATCG)" maxlength="20">
+                                    <button class="run-btn-full" onclick="runSearch()">
+                                        <i class="ri-search-line"></i>
+                                        <span>ANALIZAR</span>
+                                    </button>
+                                    <div class="presets-section">
+                                        <span class="presets-label">PRESETS</span>
+                                        <div class="presets-compact">
+                                            <button class="chip-compact" onclick="setPattern('ATG')">ATG</button>
+                                            <button class="chip-compact" onclick="setPattern('TGA')">TGA</button>
+                                            <button class="chip-compact" onclick="setPattern('TATA')">TATA</button>
+                                            <button class="chip-compact" onclick="setPattern('GATTACA')">GATTACA</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +146,7 @@
                     <div class="glass-panel full-height">
                         <div class="panel-header">
                             <div class="panel-title"><i class="ri-file-list-3-line"></i> RESULTADOS DEL ANÁLISIS</div>
-                            <button class="icon-btn-small" onclick="switchView('search')"><i class="ri-close-line"></i></button>
+                            <button class="icon-btn-small" onclick="switchView('dashboard')"><i class="ri-close-line"></i></button>
                         </div>
 
                         <div class="results-summary">
@@ -164,6 +157,14 @@
                             <div class="stat-item">
                                 <span class="stat-label">COINCIDENCIAS</span>
                                 <span class="stat-value" id="resMatches">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label" id="resTimeLabel">TIEMPO gRPC</span>
+                                <span class="stat-value" id="resTimeGrpc">---</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">TIEMPO PROCESAMIENTO</span>
+                                <span class="stat-value" id="resTimeTotal">---</span>
                             </div>
                         </div>
 
@@ -179,7 +180,7 @@
                                         <th>ID</th>
                                         <th>POSICIÓN</th>
                                         <th>CONTEXTO</th>
-                                        <th>CONFIANZA</th>
+                                        <th>ALGORITMO</th>
                                     </tr>
                                 </thead>
                                 <tbody id="resultsTableBody"></tbody>
@@ -191,24 +192,16 @@
                 <section class="view" id="viewHistory">
                     <div class="glass-panel full-height">
                         <div class="panel-header">
-                            <div class="panel-title"><i class="ri-history-line"></i> REGISTRO DE SESIONES</div>
+                            <div class="panel-title"><i class="ri-history-line"></i> REGISTRO DE BUSQUEDAS</div>
+                            <button class="clear-history-btn" onclick="clearHistory()" title="Limpiar historial">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
                         </div>
-                        <div class="history-list">
-                            <div class="history-item">
-                                <div class="h-icon"><i class="ri-file-text-line"></i></div>
-                                <div class="h-info">
-                                    <h4>MUESTRA_ALFA_01.CSV</h4>
-                                    <small>Hace 2 horas • Completado</small>
-                                </div>
-                                <span class="h-status">OK</span>
-                            </div>
-                            <div class="history-item">
-                                <div class="h-icon error"><i class="ri-file-warning-line"></i></div>
-                                <div class="h-info">
-                                    <h4>DATA_CORRUPT.TXT</h4>
-                                    <small>Ayer • Fallido</small>
-                                </div>
-                                <span class="h-status error">ERR</span>
+                        <div class="history-list" id="historyList">
+                            <div class="history-empty" id="historyEmpty">
+                                <i class="ri-inbox-line"></i>
+                                <p>No hay registros de busquedas</p>
+                                <small>Las busquedas realizadas apareceran aqui</small>
                             </div>
                         </div>
                     </div>
@@ -223,6 +216,6 @@
         <span id="toastMessage">Mensaje del sistema</span>
     </div>
 
-    <script src="script.js"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
