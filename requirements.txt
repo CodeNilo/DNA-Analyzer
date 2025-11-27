@@ -1,0 +1,16 @@
+# Backend core
+Django==5.2.8
+djangorestframework==3.16.1
+
+# DB connectors
+psycopg2-binary==2.9.11
+
+# Utilities
+python-dotenv==1.2.1
+
+# Optional dev helpers (uncomment if needed)
+# django-cors-headers==4.4.0
+
+# gRPC (cliente Python)
+grpcio==1.66.1
+grpcio-tools==1.66.1
