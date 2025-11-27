@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from sequences_api.models import DNASequence
 from .models import SearchJob, SearchResult
 from .serializers import SearchJobSerializer, SearchRequestSerializer, SearchResultSerializer
-from .services import run_local_search
+from .services import run_search
 
 
 class SearchView(APIView):
@@ -34,7 +34,10 @@ class SearchView(APIView):
         )
 
         try:
-            result_data = run_local_search(sequence.sequence, pattern, allow_overlapping)
+            import time
+            t0 = time.perf_counter()
+            result_data = run_search(sequence.sequence, pattern, allow_overlapping)
+            end_to_end_ms = (time.perf_counter() - t0) * 1000
             matches = result_data['matches']
 
             # Guardamos resultados asociados al job
@@ -70,6 +73,8 @@ class SearchView(APIView):
             {
                 'job': job_data,
                 'results': top_results,
+                'end_to_end_ms': end_to_end_ms,
+                'search_time_ms': result_data.get('search_time_ms'),
             },
             status=status.HTTP_200_OK,
         )
