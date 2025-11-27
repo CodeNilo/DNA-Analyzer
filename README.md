@@ -7,7 +7,9 @@ Web application for searching patterns in DNA sequences using optimized algorith
 The system uses a microservices architecture with two main components:
 
 - **Django Backend**: Manages HTTP requests, data validation, business logic, and orchestrates the search operations
-- **C++ gRPC Microservice**: Executes pattern matching algorithms (KMP and Boyer-Moore) for maximum performance
+- **C++ gRPC Microservice**: Executes a pattern matching algorithm (KMP) for maximum performance
+
+![Project Demo](assets/website_upload.gif)
 
 ### Stack
 
@@ -99,7 +101,7 @@ make test
 ## Features
 
 - Upload DNA sequences via CSV (up to 100MB)
-- Pattern search with KMP and Boyer-Moore algorithms
+- Pattern search with KMP algorithm.
 - Two modes: direct matching and overlapping matches
 - Async processing for large sequences
 - Result caching with Redis
