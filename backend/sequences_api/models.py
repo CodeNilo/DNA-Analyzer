@@ -1,6 +1,9 @@
+import hashlib
+
 from django.db import models
 from django.utils import timezone
-import hashlib
+
+from .validators import normalize_sequence, validate_dna_sequence
 
 class DNASequence(models.Model):
     
@@ -25,7 +28,10 @@ class DNASequence(models.Model):
         return f"{self.name} ({self.length} bp)"
     
     def save(self, *args, **kwargs):
+        # Normalizamos y validamos antes de guardar
+        self.sequence = validate_dna_sequence(normalize_sequence(self.sequence))
         if not self.length:
             self.length = len(self.sequence)
+        if not self.file_hash:
+            self.file_hash = hashlib.sha256(self.sequence.encode('utf-8')).hexdigest()
         super().save(*args, **kwargs)
-
