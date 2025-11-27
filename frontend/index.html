@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS GENOME INTERFACE PRO</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cosmic-background">
+        <div class="stars"></div>
+        <div class="grid-floor"></div>
+        <div class="dna-container" id="dnaContainer">
+            <div class="dna-helix" id="dnaHelix"></div>
+        </div>
+    </div>
+
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="logo" onclick="window.location.reload()" style="cursor: pointer;" title="Inicio">
+    <i class="ri-home-4-line"></i>
+</div>
+            
+            <nav class="nav-group">
+                <button class="nav-btn active" data-view="upload" title="Cargar Secuencia">
+                    <i class="ri-upload-cloud-2-line"></i>
+                </button>
+                <button class="nav-btn" data-view="history" title="Historial">
+                    <i class="ri-history-line"></i>
+                </button>
+                
+                <div class="nav-divider"></div>
+                
+                <button class="nav-btn locked" data-view="dashboard" id="navDashboard" title="Dashboard">
+                    <i class="ri-pulse-line"></i>
+                </button>
+                <button class="nav-btn locked" data-view="search" id="navSearch" title="Búsqueda">
+                    <i class="ri-search-eye-line"></i>
+                </button>
+                <button class="nav-btn locked" data-view="results" id="navResults" title="Resultados">
+                    <i class="ri-file-list-3-line"></i>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <span class="sys-version">v6.5 PRO</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-brand">
+                    <h1>GENOME SEQUENCER <span class="pro-badge">PRO</span></h1>
+                    <p class="subtitle">PROJECT: NEXUS VIOLET // SESSION #8842-X</p>
+                </div>
+                <div class="status-indicator">
+                    <span class="status-dot waiting" id="statusDot"></span>
+                    <span class="status-text" id="statusText">ESPERANDO DATA</span>
+                </div>
+            </header>
+
+            <div class="views-wrapper">
+                
+                <section class="view active" id="viewUpload">
+                    <div class="center-view">
+                        <div class="upload-zone" id="dropZone">
+                            <div class="upload-icon">
+                                <i class="ri-add-line"></i>
+                            </div>
+                            <h3 class="upload-title">Importar Secuencia</h3>
+                            <p class="upload-subtitle">Arrastra tu archivo o haz clic</p>
+                            <div class="upload-formats">
+                                <span class="format-tag">.CSV</span>
+                                <span class="format-tag">.FASTA</span>
+                            </div>
+                            <input type="file" id="fileInput" hidden accept=".csv,.fasta,.txt">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="view" id="viewDashboard">
+                    <div class="dashboard-grid">
+                        <div class="glass-panel visualizer-panel">
+                            <div class="panel-header">
+                                <div class="panel-title">
+                                    <i class="ri-focus-3-line"></i> VISUALIZACIÓN 3D
+                                </div>
+                                <div class="panel-tags">
+                                    <span class="tag live">EN VIVO</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel stats-panel">
+                            <div class="panel-header">
+                                <div class="panel-title"><i class="ri-bar-chart-box-line"></i> ESTADÍSTICAS</div>
+                            </div>
+                            <div class="stats-list">
+                                <div class="stat-item">
+                                    <span class="stat-label">ARCHIVO</span>
+                                    <span class="stat-value filename" id="fileName">---</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">PARES BASES</span>
+                                    <span class="stat-value" id="statBP">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">CONTENIDO GC</span>
+                                    <span class="stat-value" id="statGC">0%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">CALIDAD</span>
+                                    <span class="stat-value highlight">Q30 (Óptima)</span>
+                                </div>
+                            </div>
+                            <button class="cta-button" onclick="switchView('search')">
+                                <span>IR AL BUSCADOR</span>
+                                <i class="ri-arrow-right-s-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="view" id="viewSearch">
+                    <div class="glass-panel full-height">
+                        <div class="panel-header">
+                            <div class="panel-title"><i class="ri-search-2-line"></i> MOTOR DE BÚSQUEDA</div>
+                        </div>
+                        
+                        <div class="search-container">
+                            <label class="input-label">SECUENCIA OBJETIVO (MOTIF)</label>
+                            <div class="search-box">
+                                <input type="text" id="patternInput" placeholder="EJ: ATCG..." maxlength="20">
+                                <button class="run-btn" onclick="runSearch()">ANALIZAR</button>
+                            </div>
+                            
+                            <div class="presets-area">
+                                <span class="stat-label">PRESETS RÁPIDOS:</span>
+                                <div class="chips-grid">
+                                    <button class="chip" onclick="setPattern('ATG')">START (ATG)</button>
+                                    <button class="chip" onclick="setPattern('TGA')">STOP (TGA)</button>
+                                    <button class="chip" onclick="setPattern('TATA')">CAJA TATA</button>
+                                    <button class="chip" onclick="setPattern('GATTACA')">GATTACA</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="view" id="viewResults">
+                    <div class="glass-panel full-height">
+                        <div class="panel-header">
+                            <div class="panel-title"><i class="ri-file-list-3-line"></i> RESULTADOS DEL ANÁLISIS</div>
+                            <button class="icon-btn-small" onclick="switchView('search')"><i class="ri-close-line"></i></button>
+                        </div>
+
+                        <div class="results-summary">
+                            <div class="stat-item">
+                                <span class="stat-label">PATRÓN</span>
+                                <span class="stat-value highlight" id="resPattern">---</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">COINCIDENCIAS</span>
+                                <span class="stat-value" id="resMatches">0</span>
+                            </div>
+                        </div>
+
+                        <div class="genome-map-wrapper">
+                            <span class="stat-label">MAPA DE DENSIDAD</span>
+                            <div class="genome-track" id="genomeTrack"></div>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>POSICIÓN</th>
+                                        <th>CONTEXTO</th>
+                                        <th>CONFIANZA</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="view" id="viewHistory">
+                    <div class="glass-panel full-height">
+                        <div class="panel-header">
+                            <div class="panel-title"><i class="ri-history-line"></i> REGISTRO DE SESIONES</div>
+                        </div>
+                        <div class="history-list">
+                            <div class="history-item">
+                                <div class="h-icon"><i class="ri-file-text-line"></i></div>
+                                <div class="h-info">
+                                    <h4>MUESTRA_ALFA_01.CSV</h4>
+                                    <small>Hace 2 horas • Completado</small>
+                                </div>
+                                <span class="h-status">OK</span>
+                            </div>
+                            <div class="history-item">
+                                <div class="h-icon error"><i class="ri-file-warning-line"></i></div>
+                                <div class="h-info">
+                                    <h4>DATA_CORRUPT.TXT</h4>
+                                    <small>Ayer • Fallido</small>
+                                </div>
+                                <span class="h-status error">ERR</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <div class="toast" id="toast">
+        <div class="toast-icon"><i class="ri-alert-line"></i></div>
+        <span id="toastMessage">Mensaje del sistema</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

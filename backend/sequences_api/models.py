@@ -1,0 +1,31 @@
+from django.db import models
+from django.utils import timezone
+import hashlib
+
+class DNASequence(models.Model):
+    
+    name = models.CharField(max_length=255, help_text="Nombre del archivo")
+    sequence = models.TextField(help_text="Secuencia de ADN (A, T, C, G, N)")
+    length = models.PositiveIntegerField(help_text="Longitud de la secuencia")
+    uploaded_at = models.DateTimeField(default=timezone.now, help_text="Fecha y hora de subida")
+    file_hash = models.CharField(max_length=64, unique=True, help_text="Hash SHA-256 del archivo para evitar duplicados")
+    
+    # Metadata del Modelo
+    class Meta:
+        db_table = "dna_sequences"
+        ordering = ["-uploaded_at"]
+        indexes = [
+            models.Index(fields=["uploaded_at"]),
+            models.Index(fields=["file_hash"]),
+        ]
+        verbose_name = "DNA Sequence"
+        verbose_name_plural = "DNA Sequences"
+    
+    def __str__(self):
+        return f"{self.name} ({self.length} bp)"
+    
+    def save(self, *args, **kwargs):
+        if not self.length:
+            self.length = len(self.sequence)
+        super().save(*args, **kwargs)
+
