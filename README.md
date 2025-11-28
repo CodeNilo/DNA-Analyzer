@@ -14,7 +14,6 @@ The system uses a microservices architecture with two main components:
 - Backend: Django 5.x, Django REST Framework, PostgreSQL/SQLite
 - Microservice: C++17, gRPC, Protocol Buffers
 - Frontend: JavaScript ES6+, CSS3, Django templates
-- Async Processing: Celery, Redis
 - Testing: pytest, Google Test
 
 ### Project Structure
@@ -101,8 +100,6 @@ make test
 - Upload DNA sequences via CSV (up to 100MB)
 - Pattern search with KMP and Boyer-Moore algorithms
 - Two modes: direct matching and overlapping matches
-- Async processing for large sequences
-- Result caching with Redis
 - Search history stored in localStorage
 - Export results as CSV or JSON
 
